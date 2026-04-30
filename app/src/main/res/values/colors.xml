@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="verde">#10B981</color>
+    <color name="fondos">#0F172A</color>
+    <color name="botones">#059669</color>
+    <color name="boton_sec">#1E293B</color>
+    <color name="light_gray">#94A3AB</color>
+    <color name="gray">#64748B</color>
+    <color name="red">#F87171</color>
+    <color name="green">#D1FAE5</color>
+    <color name="trending">#272F40</color>
+    <color name ="fondo_et1">#182C53</color>
+    <color name ="fondo_et2">#0F373C</color>
+    <color name="text_et1">#92C4FC</color>
+
+
+
+
+</resources>

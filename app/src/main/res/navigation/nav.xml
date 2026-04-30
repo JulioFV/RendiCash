@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/bienvenida">
+
+    <fragment
+        android:id="@+id/login"
+        android:name="com.ingjcfv.rendicash11.Login"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_bienvenida"
+            app:destination="@id/bienvenida" />
+        <action
+            android:id="@+id/action_login_to_dashboard"
+            app:destination="@id/dashboard" />
+    </fragment>
+    <fragment
+        android:id="@+id/bienvenida"
+        android:name="com.ingjcfv.rendicash11.bienvenida"
+        android:label="fragment_bienvenida"
+        tools:layout="@layout/fragment_bienvenida" >
+        <action
+            android:id="@+id/action_bienvenida_to_login"
+            app:destination="@id/login" />
+        <action
+            android:id="@+id/action_bienvenida_to_dashboard"
+            app:destination="@id/dashboard" />
+    </fragment>
+    <fragment
+        android:id="@+id/dashboard"
+        android:name="com.ingjcfv.rendicash11.Dashboard"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_dashboard_to_mis_proyectos"
+            app:destination="@id/mis_proyectos" />
+        <action
+            android:id="@+id/action_dashboard_to_detalles_proyecto"
+            app:destination="@id/detalles_proyecto" />
+    </fragment>
+    <fragment
+        android:id="@+id/mis_proyectos"
+        android:name="com.ingjcfv.rendicash11.mis_proyectos"
+        android:label="fragment_mis_proyectos"
+        tools:layout="@layout/fragment_mis_proyectos" >
+        <action
+            android:id="@+id/action_mis_proyectos_to_crear_proyecto"
+            app:destination="@id/crear_proyecto" />
+        <action
+            android:id="@+id/action_mis_proyectos_to_detalles_proyecto"
+            app:destination="@id/detalles_proyecto" />
+    </fragment>
+    <fragment
+        android:id="@+id/crear_proyecto"
+        android:name="com.ingjcfv.rendicash11.crear_proyecto"
+        android:label="fragment_crear_proyecto"
+        tools:layout="@layout/fragment_crear_proyecto" >
+        <action
+            android:id="@+id/action_crear_proyecto_to_mis_proyectos"
+            app:destination="@id/mis_proyectos" />
+    </fragment>
+    <fragment
+        android:id="@+id/detalles_proyecto"
+        android:name="com.ingjcfv.rendicash11.detalles_proyecto"
+        android:label="fragment_detalles_proyecto"
+        tools:layout="@layout/fragment_detalles_proyecto" >
+        <action
+            android:id="@+id/action_detalles_proyecto_to_nuevo_movimiento"
+            app:destination="@id/nuevo_movimiento" />
+    </fragment>
+    <fragment
+        android:id="@+id/nuevo_movimiento"
+        android:name="com.ingjcfv.rendicash11.nuevo_movimiento"
+        android:label="fragment_nuevo_movimiento"
+        tools:layout="@layout/fragment_nuevo_movimiento" >
+        <action
+            android:id="@+id/action_nuevo_movimiento_to_detalles_proyecto"
+            app:destination="@id/detalles_proyecto" />
+    </fragment>
+</navigation>
