@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_bienvenida_to_dashboard"
             app:destination="@id/dashboard" />
+        <action
+            android:id="@+id/action_bienvenida_to_registro"
+            app:destination="@id/registro" />
     </fragment>
     <fragment
         android:id="@+id/dashboard"
@@ -70,6 +73,9 @@
         <action
             android:id="@+id/action_detalles_proyecto_to_nuevo_movimiento"
             app:destination="@id/nuevo_movimiento" />
+        <action
+            android:id="@+id/action_detalles_proyecto_to_detalles_movimiento"
+            app:destination="@id/detalles_movimiento" />
     </fragment>
     <fragment
         android:id="@+id/nuevo_movimiento"
@@ -79,5 +85,19 @@
         <action
             android:id="@+id/action_nuevo_movimiento_to_detalles_proyecto"
             app:destination="@id/detalles_proyecto" />
+    </fragment>
+    <fragment
+        android:id="@+id/detalles_movimiento"
+        android:name="com.ingjcfv.rendicash11.detalles_movimiento"
+        android:label="fragment_detalles_movimiento"
+        tools:layout="@layout/fragment_detalles_movimiento" />
+    <fragment
+        android:id="@+id/registro"
+        android:name="com.ingjcfv.rendicash11.registro"
+        android:label="fragment_registro"
+        tools:layout="@layout/fragment_registro" >
+        <action
+            android:id="@+id/action_registro_to_bienvenida"
+            app:destination="@id/bienvenida" />
     </fragment>
 </navigation>
