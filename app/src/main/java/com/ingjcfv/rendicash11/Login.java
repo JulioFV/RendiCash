@@ -17,6 +17,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.ingjcfv.rendicash11.modelo.Usuario;
+import com.ingjcfv.rendicash11.repositorio.RepoUsuario;
+import com.ingjcfv.rendicash11.utils.Alerta;
+import com.ingjcfv.rendicash11.utils.SessionManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +33,11 @@ public class Login extends Fragment {
     private TextView btnRecoveryPassword;
     private TextInputEditText txtUsuario, txtPassword;
     private NavController nav;
+    private RepoUsuario repoUsuario;
+    private SessionManager sessionManager;
+
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -39,6 +48,8 @@ public class Login extends Fragment {
         btnRecoveryPassword = view.findViewById(R.id.login_btn_recoverypassword);
         txtUsuario = view.findViewById(R.id.login_txtusuario);
         txtPassword = view.findViewById(R.id.login_txtpassword);
+        sessionManager = new SessionManager(requireContext());
+
         btnRegresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,13 +59,42 @@ public class Login extends Fragment {
         btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nav.navigate(R.id.action_login_to_dashboard);
-                //*
-                // LOGICA DEL LOGIN
-                // */
+                validarUsuario();
             }
         });
+        repoUsuario = new RepoUsuario(requireContext());
 
+    }
+    private void validarUsuario() {
+        Alerta progress = new Alerta(requireContext());
+        progress.AlertaCarga("Validando credenciales", "Por favor espere...");
+
+        String usuario = txtUsuario.getText().toString();
+        String password = txtPassword.getText().toString();
+        Usuario usuarioEncontrado = repoUsuario.buscarUsuarioPorCorreo(usuario);
+        try{
+            if (usuarioEncontrado != null) {
+                if (usuarioEncontrado.getPassword().equals(password)) {
+                    sessionManager.saveSession(usuarioEncontrado);
+                    nav.navigate(R.id.action_login_to_dashboard);
+                    progress.cerrarDialogo();
+                }
+                else {
+                    txtUsuario.setError("Credenciales incorrectas");
+                    txtPassword.setError("Credenciales incorrectas");
+                    progress.cerrarDialogo();
+                }
+
+            }else{
+                progress.cerrarDialogo();
+                new Alerta(requireContext()).AlertaError("Error", "El usuario no existe");
+            }
+        }catch (Exception e){
+            progress.cerrarDialogo();
+            new Alerta(requireContext()).AlertaError("Error", "No se pudo validar el usuario");
+        }finally {
+            progress.cerrarDialogo();
+        }
     }
 
     // TODO: Rename parameter arguments, choose names that match

@@ -13,24 +13,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ingjcfv.rendicash11.modelo.Usuario;
+import com.ingjcfv.rendicash11.repositorio.RepoUsuario;
+import com.ingjcfv.rendicash11.utils.Alerta;
+import com.ingjcfv.rendicash11.utils.SessionManager;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link bienvenida#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class bienvenida extends Fragment {
-    private CardView btnInvitado, btnLogin;
+    private CardView btnInvitado, btnLogin, btnCrearCuenta;
     private NavController nav;
+    private RepoUsuario repoUsuario;
+    private SessionManager sessionManager;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnInvitado = view.findViewById(R.id.lg_btn_invitado);
         btnLogin = view.findViewById(R.id.lg_btn_login);
+        btnCrearCuenta = view.findViewById(R.id.lg_btn_crear_cuenta);
         nav = Navigation.findNavController(view);
+        repoUsuario = new RepoUsuario(requireContext());
+        sessionManager = new SessionManager(requireContext());
         btnInvitado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Logica de invitado
+                validarInvitado();
             }
         });
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -39,14 +49,30 @@ public class bienvenida extends Fragment {
                 nav.navigate(R.id.action_bienvenida_to_login);
             }
         });
-        btnInvitado.setOnClickListener(new View.OnClickListener() {
+        btnCrearCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nav.navigate(R.id.action_bienvenida_to_dashboard);
+                nav.navigate(R.id.action_bienvenida_to_registro);
             }
         });
 
     }
+    private void validarInvitado(){
+        String usuario = "invitado@rendicash";
+        String password = "123";
+        Usuario UInvitado = repoUsuario.buscarUsuarioPorCorreo(usuario);
+        if(UInvitado != null){
+            if(UInvitado.getPassword().equals(password)){
+                sessionManager.saveSession(UInvitado);
+                nav.navigate(R.id.action_bienvenida_to_dashboard);
+            }else{
+                new Alerta(requireContext()).AlertaError("Error", "El usuario por default no existe");
+            }
+        }else{
+            new Alerta(requireContext()).AlertaError("ERROR DESCONOCIDO", "INTENTALO MÁS TARDE");
+        }
+    }
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

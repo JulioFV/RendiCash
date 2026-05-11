@@ -7,11 +7,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.ingjcfv.rendicash11.adapter.AdapterProyecto;
+import com.ingjcfv.rendicash11.modelo.Proyecto;
+import com.ingjcfv.rendicash11.repositorio.RepoProyectos;
+import com.ingjcfv.rendicash11.utils.Alerta;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,18 +31,52 @@ import android.widget.ImageView;
 public class mis_proyectos extends Fragment {
     private ImageView btnMas;
     private NavController nav;
+    private RecyclerView recProyectos;
+    private ArrayList<Proyecto> lista;
+    private RepoProyectos repoProyectos;
+    private AdapterProyecto adapter;
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         nav = Navigation.findNavController(view);
         btnMas = view.findViewById(R.id.mis_proyectos_btnmas);
+        recProyectos = view.findViewById(R.id.mis_proyectos_recycler);
+        recProyectos.setHasFixedSize(true);
+        recProyectos.setLayoutManager(new LinearLayoutManager(requireContext()));
+        lista = new ArrayList<>();
+        this.obtenerProyectos();
+        repoProyectos = new RepoProyectos(requireContext());
         btnMas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 nav.navigate(R.id.action_mis_proyectos_to_crear_proyecto);
             }
         });
+    }
+    private void obtenerProyectos(){
+        if(!isAdded())return;
+        new Alerta(requireContext()).AlertaCarga("Cargando", "Por favor espere...");
+        try{
+            List<Proyecto> data = repoProyectos.obtenerProyectosPorUsuario(1);
+            lista.clear();
+            if(data != null) lista.addAll(data);
+            if(recProyectos.getLayoutManager() == null){
+                recProyectos.setHasFixedSize(true);
+                recProyectos.setLayoutManager(new LinearLayoutManager(requireContext()));
+            }
+            if(adapter == null){
+                adapter = new AdapterProyecto(new ArrayList<>());
+                recProyectos.setAdapter(adapter);
+            }
+
+        }catch (Exception e){
+            new Alerta(requireContext()).cerrarDialogo();
+            new Alerta(requireContext()).AlertaError("Error", "No se pudo obtener los proyectos");
+        }finally {
+            new Alerta(requireContext()).cerrarDialogo();
+        }
     }
 
     // TODO: Rename parameter arguments, choose names that match

@@ -70,6 +70,7 @@ public class Alerta {
     public void AlertaCarga(String titulo, String mensaje){
         btnCerrar.setVisibility(View.GONE);
         btnConfirmar.setVisibility(View.GONE);
+        imgAlerta.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         bg_circulo.setBackground(ContextCompat.getDrawable(contexto, R.drawable.bg_circulo_azul));
         txt_titulo.setText(titulo);
