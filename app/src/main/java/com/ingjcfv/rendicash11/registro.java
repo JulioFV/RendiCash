@@ -2,11 +2,21 @@ package com.ingjcfv.rendicash11;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +24,32 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class registro extends Fragment {
+    private NavController nav;
+    private CardView btnCrear;
+    private TextView btnLogin;
+    private ImageView btnRegresar;
+    private TextInputEditText txtNombre, txtUsername, txtPassword;
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        btnCrear = view.findViewById(R.id.registro_btn_entrar);
+        btnLogin = view.findViewById(R.id.registro_btnlogin);
+        btnRegresar = view.findViewById(R.id.registro_btn_regresar);
+        txtNombre = view.findViewById(R.id.registro_txtusuario);
+        txtUsername = view.findViewById(R.id.registro_txtusername);
+        txtPassword = view.findViewById(R.id.registro_txtpassword);
+        nav = Navigation.findNavController(view);
+
+        btnRegresar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nav.navigate(R.id.action_registro_to_bienvenida);
+
+            }
+        });
+
+    }
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
