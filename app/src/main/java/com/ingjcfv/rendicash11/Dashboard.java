@@ -7,11 +7,24 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.ingjcfv.rendicash11.adapter.AdapterProyecto;
+import com.ingjcfv.rendicash11.modelo.Proyecto;
+import com.ingjcfv.rendicash11.repositorio.RepoProyectos;
+import com.ingjcfv.rendicash11.utils.Alerta;
+import com.ingjcfv.rendicash11.utils.CallbackResultado;
+import com.ingjcfv.rendicash11.utils.SessionManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,10 +34,17 @@ import android.widget.TextView;
 public class Dashboard extends Fragment {
     private TextView btnVerTodos;
     private NavController nav;
+    private RepoProyectos repoProyectos;
+    private RecyclerView recProyectos;
+    private ArrayList<Proyecto> lista;
+    private AdapterProyecto adapter;
+    private SessionManager session;
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        session = new SessionManager(requireContext());
         btnVerTodos = view.findViewById(R.id.dash_btn_ver_todos);
         nav = Navigation.findNavController(view);
         btnVerTodos.setOnClickListener(new View.OnClickListener() {
@@ -33,9 +53,83 @@ public class Dashboard extends Fragment {
                 nav.navigate(R.id.action_dashboard_to_mis_proyectos);
             }
         });
+        recProyectos = view.findViewById(R.id.dash_proyectos_activos);
+        repoProyectos = new RepoProyectos(requireContext());
+        recProyectos.setHasFixedSize(true);
+        recProyectos.setLayoutManager(new LinearLayoutManager(requireContext()));
+        lista = new ArrayList<>();
+        obtenerProyectosRecomendados();
+
+    }
+    private void obtenerProyectosRecomendados() {
+
+        if (!isAdded()) return;
+
+        Alerta alertas = new Alerta(requireContext());
+        alertas.AlertaCarga("Cargando", "Por favor espere...");
+        Log.e("ID DEL USUARIO", session.getSession().getId()+"");
 
 
+        repoProyectos.obtenerProyectosRecomendados(session.getSession().getId(),
 
+                new CallbackResultado<List<Proyecto>>() {
+
+                    @Override
+                    public void onSuccess(List<Proyecto> data) {
+
+                        if (!isAdded()) return;
+
+                        alertas.cerrarDialogo();
+
+                        lista.clear();
+
+                        if (data != null) {
+                            lista.addAll(data);
+                        }
+
+                        if (recProyectos.getLayoutManager() == null) {
+
+                            recProyectos.setHasFixedSize(true);
+
+                            recProyectos.setLayoutManager(
+                                    new LinearLayoutManager(requireContext())
+                            );
+                        }
+
+                        if (adapter == null) {
+
+                            adapter = new AdapterProyecto(lista);
+                            recProyectos.setAdapter(adapter);
+
+                        } else {
+
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    }
+
+
+                    @Override
+                    public void onError(Exception e) {
+
+                        if (!isAdded()) return;
+
+                        alertas.cerrarDialogo();
+
+                        Log.e(
+                                "PROYECTOS_RECOMENDADOS",
+                                e.getMessage(),
+                                e
+                        );
+
+                        new Alerta(requireContext())
+                                .AlertaError(
+                                        "Error",
+                                        "No se pudo obtener los proyectos"
+                                );
+                    }
+                }
+        );
     }
 
     // TODO: Rename parameter arguments, choose names that match

@@ -77,4 +77,17 @@ public class Proyecto {
     public void setId_usuario(int id_usuario) {
         this.id_usuario = id_usuario;
     }
+
+    @Override
+    public String toString() {
+        return "Proyecto{" +
+                "id=" + id +
+                ", icono=" + icono +
+                ", nombre='" + nombre + '\'' +
+                ", precioEstimado=" + precioEstimado +
+                ", detalles='" + detalles + '\'' +
+                ", status=" + status +
+                ", id_usuario=" + id_usuario +
+                '}';
+    }
 }

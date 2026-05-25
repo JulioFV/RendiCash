@@ -10,6 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import com.ingjcfv.rendicash11.adapter.AdapterProyecto;
 import com.ingjcfv.rendicash11.modelo.Proyecto;
 import com.ingjcfv.rendicash11.repositorio.RepoProyectos;
 import com.ingjcfv.rendicash11.utils.Alerta;
+import com.ingjcfv.rendicash11.utils.CallbackResultado;
+import com.ingjcfv.rendicash11.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,7 @@ public class mis_proyectos extends Fragment {
     private ArrayList<Proyecto> lista;
     private RepoProyectos repoProyectos;
     private AdapterProyecto adapter;
+    private SessionManager session;
 
 
     @Override
@@ -46,39 +50,82 @@ public class mis_proyectos extends Fragment {
         recProyectos.setHasFixedSize(true);
         recProyectos.setLayoutManager(new LinearLayoutManager(requireContext()));
         lista = new ArrayList<>();
-        this.obtenerProyectos();
         repoProyectos = new RepoProyectos(requireContext());
+        session = new SessionManager(requireContext());
         btnMas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 nav.navigate(R.id.action_mis_proyectos_to_crear_proyecto);
             }
         });
-    }
-    private void obtenerProyectos(){
-        if(!isAdded())return;
-        new Alerta(requireContext()).AlertaCarga("Cargando", "Por favor espere...");
-        try{
-            List<Proyecto> data = repoProyectos.obtenerProyectosPorUsuario(1);
-            lista.clear();
-            if(data != null) lista.addAll(data);
-            if(recProyectos.getLayoutManager() == null){
-                recProyectos.setHasFixedSize(true);
-                recProyectos.setLayoutManager(new LinearLayoutManager(requireContext()));
-            }
-            if(adapter == null){
-                adapter = new AdapterProyecto(new ArrayList<>());
-                recProyectos.setAdapter(adapter);
-            }
+        obtenerProyectos();
 
-        }catch (Exception e){
-            new Alerta(requireContext()).cerrarDialogo();
-            new Alerta(requireContext()).AlertaError("Error", "No se pudo obtener los proyectos");
-        }finally {
-            new Alerta(requireContext()).cerrarDialogo();
-        }
     }
+    private void obtenerProyectos() {
 
+        if (!isAdded()) return;
+
+        Alerta alertas = new Alerta(requireContext());
+        alertas.AlertaCarga("Cargando", "Por favor espere...");
+
+        repoProyectos.obtenerProyectosPorUsuario(
+                session.getSession().getId(),
+
+                new CallbackResultado<List<Proyecto>>() {
+
+                    @Override
+                    public void onSuccess(List<Proyecto> data) {
+
+                        if (!isAdded()) return;
+
+                        alertas.cerrarDialogo();
+
+                        lista.clear();
+
+                        if (data != null) {
+                            lista.addAll(data);
+                        }
+
+                        if (recProyectos.getLayoutManager() == null) {
+
+                            recProyectos.setHasFixedSize(true);
+
+                            recProyectos.setLayoutManager(
+                                    new LinearLayoutManager(requireContext())
+                            );
+                        }
+
+                        if (adapter == null) {
+
+                            adapter = new AdapterProyecto(lista);
+                            recProyectos.setAdapter(adapter);
+
+                        } else {
+
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    }
+
+
+                    @Override
+                    public void onError(Exception e) {
+
+                        if (!isAdded()) return;
+
+                        alertas.cerrarDialogo();
+
+                        Log.e("ERROR", e.getMessage());
+
+                        new Alerta(requireContext())
+                                .AlertaError(
+                                        "Error",
+                                        "No se pudo obtener los proyectos"
+                                );
+                    }
+                }
+        );
+    }
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";

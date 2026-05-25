@@ -1,6 +1,8 @@
 package com.ingjcfv.rendicash11.repositorio;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.ingjcfv.rendicash11.dao.DaoProyecto;
 import com.ingjcfv.rendicash11.database.AppDatabase;
@@ -12,6 +14,7 @@ import java.util.List;
 
 public class RepoProyectos {
     private final DaoProyecto daoProyecto;
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
     public RepoProyectos(Context contexto) {
         daoProyecto = AppDatabase.getInstance(contexto).daoProyecto();
     }
@@ -19,13 +22,67 @@ public class RepoProyectos {
         DatabaseExecutor.EXECUTOR.execute(() -> {
             try{
                 daoProyecto.crearProyecto(proyecto);
-                callback.onSuccess("Proyecto creado");
+                mainHandler.post(() -> {
+                    callback.onSuccess("Proyecto creado");
+                });
             }catch (Exception e){
-                callback.onError(e);
+                mainHandler.post(() -> {
+                    callback.onError(e);
+                });
             }
         });
     }
-    public List<Proyecto> obtenerProyectosPorUsuario(int id_usuario) {
-        return daoProyecto.obtenerProyectosPorUsuario(id_usuario);
+    public void obtenerProyectosPorUsuario(
+            int id_usuario,
+            CallbackResultado<List<Proyecto>> callback
+    ) {
+
+        DatabaseExecutor.EXECUTOR.execute(() -> {
+
+            try {
+
+                List<Proyecto> proyectos =
+                        daoProyecto.obtenerProyectosPorUsuario(id_usuario);
+
+                mainHandler.post(() -> {
+                    callback.onSuccess(proyectos);
+                });
+
+            } catch (Exception e) {
+
+                mainHandler.post(() -> {
+                    callback.onError(e);
+                });
+
+            }
+
+        });
+    }
+
+
+    public void obtenerProyectosRecomendados(int id_usuario,
+            CallbackResultado<List<Proyecto>> callback
+    ) {
+
+        DatabaseExecutor.EXECUTOR.execute(() -> {
+
+            try {
+
+                List<Proyecto> proyectos =
+                        daoProyecto.obtenerProyectosRecomendados(id_usuario);
+
+                mainHandler.post(() -> {
+                    callback.onSuccess(proyectos);
+                });
+
+            } catch (Exception e) {
+
+                mainHandler.post(() -> {
+                    callback.onError(e);
+                });
+
+            }
+
+        });
     }
 }

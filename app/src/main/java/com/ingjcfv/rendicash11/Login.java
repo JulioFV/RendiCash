@@ -20,7 +20,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.ingjcfv.rendicash11.modelo.Usuario;
 import com.ingjcfv.rendicash11.repositorio.RepoUsuario;
 import com.ingjcfv.rendicash11.utils.Alerta;
+import com.ingjcfv.rendicash11.utils.Encriptador;
 import com.ingjcfv.rendicash11.utils.SessionManager;
+import com.ingjcfv.rendicash11.utils.UsernameNormalizer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,8 +37,8 @@ public class Login extends Fragment {
     private NavController nav;
     private RepoUsuario repoUsuario;
     private SessionManager sessionManager;
-
-
+    private UsernameNormalizer usernameNormalizer;
+    private Encriptador encriptador;
 
 
     @Override
@@ -49,7 +51,7 @@ public class Login extends Fragment {
         txtUsuario = view.findViewById(R.id.login_txtusuario);
         txtPassword = view.findViewById(R.id.login_txtpassword);
         sessionManager = new SessionManager(requireContext());
-
+        usernameNormalizer = new UsernameNormalizer();
         btnRegresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,34 +71,38 @@ public class Login extends Fragment {
         Alerta progress = new Alerta(requireContext());
         progress.AlertaCarga("Validando credenciales", "Por favor espere...");
 
-        String usuario = txtUsuario.getText().toString();
+        String usuario = usernameNormalizer.normalizeUsername(txtUsuario.getText().toString());
         String password = txtPassword.getText().toString();
         Usuario usuarioEncontrado = repoUsuario.buscarUsuarioPorCorreo(usuario);
-        try{
+
+        try {
             if (usuarioEncontrado != null) {
-                if (usuarioEncontrado.getPassword().equals(password)) {
+                // Obtener el hash almacenado en la base de datos (o repositorio)
+                String hashAlmacenado = usuarioEncontrado.getPassword();
+
+                // Verificar la contraseña ingresada contra el hash
+                // IMPORTANTE: usa el método verifyPassword de la misma clase que usaste para hashPassword
+                boolean passwordValida = encriptador.verifyPassword(password, hashAlmacenado);
+
+                if (passwordValida) {
                     sessionManager.saveSession(usuarioEncontrado);
                     nav.navigate(R.id.action_login_to_dashboard);
                     progress.cerrarDialogo();
-                }
-                else {
+                } else {
                     txtUsuario.setError("Credenciales incorrectas");
                     txtPassword.setError("Credenciales incorrectas");
                     progress.cerrarDialogo();
                 }
-
-            }else{
+            } else {
                 progress.cerrarDialogo();
                 new Alerta(requireContext()).AlertaError("Error", "El usuario no existe");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             progress.cerrarDialogo();
             new Alerta(requireContext()).AlertaError("Error", "No se pudo validar el usuario");
-        }finally {
-            progress.cerrarDialogo();
+            e.printStackTrace(); // Para depuración
         }
     }
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";

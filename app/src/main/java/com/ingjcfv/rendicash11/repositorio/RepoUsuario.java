@@ -1,6 +1,8 @@
 package com.ingjcfv.rendicash11.repositorio;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.room.Database;
 
@@ -16,6 +18,7 @@ import kotlin.reflect.KCallable;
 
 public class RepoUsuario {
     private final DaoUsuario daoUsuario;
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
     public RepoUsuario(Context contexto){
         AppDatabase db = AppDatabase.getInstance(contexto);
         daoUsuario = db.daoUsuario();
@@ -24,9 +27,13 @@ public class RepoUsuario {
         DatabaseExecutor.EXECUTOR.execute(() -> {
             try{
                 daoUsuario.crearUsuario(usuario);
-                callback.onSuccess("Usuario creado");
+                mainHandler.post(() -> {
+                    callback.onSuccess("Usuario creado");
+                });
             }catch (Exception e){
-                callback.onError(e);
+                mainHandler.post(() -> {
+                    callback.onError(e);
+                });
             }
         });
     }
@@ -34,9 +41,13 @@ public class RepoUsuario {
         DatabaseExecutor.EXECUTOR.execute(() -> {
             try {
                 daoUsuario.eliminarUsuario(usuario);
-                callback.onSuccess("Usuario eliminado");
+                mainHandler.post(() -> {
+                    callback.onSuccess("Usuario eliminado");
+                });
             } catch (Exception e) {
-                callback.onError(e);
+                mainHandler.post(() -> {
+                    callback.onError(e);
+                });
             }
         });
     }
@@ -54,9 +65,13 @@ public class RepoUsuario {
         DatabaseExecutor.EXECUTOR.execute(() ->{
             try{
                 daoUsuario.actualizarUsuario(usuario);
-                callback.onSuccess("Usuario actualizado");
+                mainHandler.post(() -> {
+                    callback.onSuccess("Usuario actualizado");
+                });
             }catch (Exception e){
-                callback.onError(e);
+                mainHandler.post(() -> {
+                    callback.onError(e);
+                });
             }
         });
     }

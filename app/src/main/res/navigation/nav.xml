@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_login_to_dashboard"
             app:destination="@id/dashboard" />
+        <action
+            android:id="@+id/action_login_to_registro"
+            app:destination="@id/registro" />
     </fragment>
     <fragment
         android:id="@+id/bienvenida"
@@ -99,5 +102,8 @@
         <action
             android:id="@+id/action_registro_to_bienvenida"
             app:destination="@id/bienvenida" />
+        <action
+            android:id="@+id/action_registro_to_login"
+            app:destination="@id/login" />
     </fragment>
 </navigation>

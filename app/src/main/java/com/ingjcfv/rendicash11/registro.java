@@ -17,6 +17,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.ingjcfv.rendicash11.dao.DaoUsuario;
+import com.ingjcfv.rendicash11.modelo.Usuario;
+import com.ingjcfv.rendicash11.repositorio.RepoUsuario;
+import com.ingjcfv.rendicash11.utils.Alerta;
+import com.ingjcfv.rendicash11.utils.CallbackResultado;
+import com.ingjcfv.rendicash11.utils.Encriptador;
+import com.ingjcfv.rendicash11.utils.UsernameNormalizer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +36,13 @@ public class registro extends Fragment {
     private TextView btnLogin;
     private ImageView btnRegresar;
     private TextInputEditText txtNombre, txtUsername, txtPassword;
+    private RepoUsuario repoUsuario;
+    private UsernameNormalizer usernameNormalizer;
+    private Encriptador encriptador;
+    private String usernameNormalizado, passwordHashed;
+
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -39,13 +53,58 @@ public class registro extends Fragment {
         txtNombre = view.findViewById(R.id.registro_txtusuario);
         txtUsername = view.findViewById(R.id.registro_txtusername);
         txtPassword = view.findViewById(R.id.registro_txtpassword);
+        usernameNormalizer = new UsernameNormalizer();
         nav = Navigation.findNavController(view);
+        repoUsuario = new RepoUsuario(requireContext());
+        encriptador = new Encriptador();
 
         btnRegresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 nav.navigate(R.id.action_registro_to_bienvenida);
+            }
+        });
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nav.navigate(R.id.action_registro_to_login);
 
+            }
+        });
+        btnCrear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                prepararDatos();
+            }
+        });
+
+    }
+    private void prepararDatos() {
+        try{
+            usernameNormalizado = usernameNormalizer.normalizeUsername(txtUsername.getText().toString());
+            passwordHashed = encriptador.hashPassword(txtPassword.getText().toString());
+            this.CrearUsuario();
+        }catch (Exception ERROR){
+            new Alerta(requireContext()).AlertaError("Error", "No se puede crear el usuario");
+        }
+    }
+    private void CrearUsuario(){
+        Alerta alertas = new Alerta(requireContext());
+        alertas.AlertaCarga("Creando Usuario", "Por favor espere...");
+        Usuario usuario = new Usuario(txtNombre.getText().toString(), passwordHashed, usernameNormalizado);
+        repoUsuario.crearUsuario(usuario, new CallbackResultado<String>(){
+            @Override
+            public void onSuccess(String result) {
+                if(!isAdded()) return;
+                alertas.cerrarDialogo();
+                new Alerta(requireContext()).AlertaExitosa();
+                nav.navigate(R.id.action_registro_to_login);
+            }
+            @Override
+            public void onError(Exception e) {
+                if(!isAdded()) return;
+                alertas.cerrarDialogo();
+                new Alerta(requireContext()).AlertaError("Error", "No se pudo crear el usuario");
             }
         });
 

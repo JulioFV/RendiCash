@@ -10,11 +10,18 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.ingjcfv.rendicash11.modelo.Proyecto;
+import com.ingjcfv.rendicash11.repositorio.RepoProyectos;
+import com.ingjcfv.rendicash11.utils.Alerta;
+import com.ingjcfv.rendicash11.utils.CallbackResultado;
+import com.ingjcfv.rendicash11.utils.SessionManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,9 +40,11 @@ public class crear_proyecto extends Fragment {
     private EditText txtItem;
     private EditText txtPrecioEst;
     private EditText txtDetalles;
-    private int icono;
+    private Proyecto proyecto;
     private ImageView btnRegresar;
     private NavController nav;
+    private SessionManager session;
+    private RepoProyectos rpProyecto;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -45,7 +54,15 @@ public class crear_proyecto extends Fragment {
         btnanimal = view.findViewById(R.id.np_btnanimal);
         btntag = view.findViewById(R.id.np_btntag);
         btnRegresar = view.findViewById(R.id.np_btn_regresar);
+        btnCrear = view.findViewById(R.id.np_btn_crear);
+        txtItem = view.findViewById(R.id.np_txtitem);
+        txtPrecioEst = view.findViewById(R.id.np_txtprecio_est);
+        txtDetalles = view.findViewById(R.id.np_txtdetalles);
+        proyecto = new Proyecto();
+        session = new SessionManager(requireContext());
+        rpProyecto = new RepoProyectos(requireContext());
         nav = Navigation.findNavController(view);
+        ManejadorDeFondos(1);
         btnRegresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,35 +72,40 @@ public class crear_proyecto extends Fragment {
         btnphone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                icono = 1;
                 ManejadorDeFondos(1);
             }
         });
         btncar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                icono = 2;
                 ManejadorDeFondos(2);
             }
         });
         btnanimal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                icono = 3;
+                proyecto.setIcono(3);
                 ManejadorDeFondos(3);
             }
         });
         btntag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                icono = 4;
                 ManejadorDeFondos(4);
+            }
+        });
+        btnCrear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                CrearProyecto();
             }
         });
 
 
     }
     private void ManejadorDeFondos(int icono) {
+        proyecto.setIcono(icono);
         List<CardView> buttons = Arrays.asList(btnphone, btncar, btnanimal, btntag);
 
         for (int i = 0; i < buttons.size(); i++) {
@@ -95,6 +117,41 @@ public class crear_proyecto extends Fragment {
             card.setCardBackgroundColor(color);
             card.invalidate(); // fuerza redraw
         }
+    }
+    private void CrearProyecto(){
+        Alerta alertas = new Alerta(requireContext());
+        alertas.AlertaCarga("Creando Proyecto", "Por favor espere...");
+        proyecto.setNombre(txtItem.getText().toString());
+        proyecto.setPrecioEstimado(Double.parseDouble(txtPrecioEst.getText().toString()));
+        proyecto.setDetalles(txtDetalles.getText().toString());
+        proyecto.setStatus(1);
+        proyecto.setId_usuario(session.getSession().getId());
+        if(proyecto.getIcono() == 0){
+            alertas.cerrarDialogo();
+            new Alerta(requireContext()).AlertaError("Error", "ELIGE UN ICONO PARA TU PROYECTO");
+        }
+        try{
+            rpProyecto.crearProyecto(proyecto, new CallbackResultado<String>(){
+                @Override
+                public void onSuccess(String result) {
+                    if(!isAdded()) return;
+                    alertas.cerrarDialogo();
+                    Log.e("PROYECTO CREADO", proyecto.toString());
+                    nav.navigate(R.id.action_crear_proyecto_to_mis_proyectos);
+                    new Alerta(requireContext()).AlertaExitosa();
+                }
+                @Override
+                public void onError(Exception e) {
+                    if(!isAdded()) return;
+                    alertas.cerrarDialogo();
+                    new Alerta(requireContext()).AlertaError("Error", "No se pudo crear el proyecto");
+                }
+            });
+        }catch (Exception e){
+            alertas.cerrarDialogo();
+            new Alerta(requireContext()).AlertaError("Error", "No se pudo crear el proyecto");
+        }
+
     }
 
     // TODO: Rename parameter arguments, choose names that match

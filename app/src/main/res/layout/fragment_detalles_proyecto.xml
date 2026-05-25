@@ -176,6 +176,7 @@
             android:elevation="10dp"
             app:cardCornerRadius="10dp"
             android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/white"
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -217,7 +218,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
+                android:layout_weight="3.5"
                 android:text="Historial de Movimientos"
                 android:textStyle="bold"
                 android:textSize="15sp"
@@ -257,6 +258,7 @@
             android:layout_weight="4"
             android:elevation="10dp"
             android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="15dp">
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -272,6 +274,7 @@
             app:cardCornerRadius="10dp"
             android:layout_margin="10dp"
             android:clickable="true"
+            app:cardBackgroundColor="@color/white"
             android:id="@+id/dp_btn_finalizar">
             <LinearLayout
                 android:layout_width="match_parent"

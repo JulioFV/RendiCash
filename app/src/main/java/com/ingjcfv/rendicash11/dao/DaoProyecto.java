@@ -14,5 +14,8 @@ public interface DaoProyecto {
     void crearProyecto(Proyecto proyecto);
     @Query("SELECT * FROM proyecto WHERE id_usuario=:id_usuario")
     List<Proyecto> obtenerProyectosPorUsuario(int id_usuario);
+    @Query("SELECT * FROM proyecto WHERE id_usuario = :id_usuario AND status = 1 ORDER BY id DESC LIMIT 3")
+    List<Proyecto> obtenerProyectosRecomendados(int id_usuario);
+
 
 }

@@ -9,7 +9,8 @@
     android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal"
         android:gravity="center">
         <ImageView
@@ -19,19 +20,22 @@
             android:layout_marginLeft="20dp"
             android:clickable="true"
             android:id="@+id/np_btn_regresar"
+            android:visibility="gone"
             />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nuevo Proyecto"
+            android:text="Nuevo Proyecto   "
             android:textSize="25sp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:layout_margin="15dp"/>
+            android:layout_marginTop="15dp"
+            android:textAlignment="textEnd"/>
     </LinearLayout>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
         android:backgroundTint="@color/white"
         android:elevation="20dp"
         app:cardCornerRadius="20dp"

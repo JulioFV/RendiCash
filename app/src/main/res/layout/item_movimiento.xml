@@ -6,22 +6,23 @@
     android:layout_height="wrap_content"
     android:id="@+id/item_proyecto"
     app:cardCornerRadius="20dp"
-    app:cardElevation="5dp"
+    app:cardElevation="30dp"
     android:backgroundTint="@color/white"
-    android:layout_margin="3dp">
+    android:layout_margin="5dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_margin="3dp"
         >
         <androidx.cardview.widget.CardView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            app:cardCornerRadius="15dp"
-            android:backgroundTint="@color/green"
+            app:cardCornerRadius="8dp"
             android:layout_gravity="center"
-            android:layout_margin="15dp">
+            android:layout_margin="15dp"
+            app:cardBackgroundColor="@color/rojo_claro"
+            android:id="@+id/it_movimeinto_bg_img"
+            >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -29,9 +30,9 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_car"
+                    android:src="@drawable/ic_arrowdownright"
                     android:layout_margin="10dp"
-                    android:id="@+id/it_proyecto_imgproyecto"
+                    android:id="@+id/it_movimeinto_img"
                     />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -39,68 +40,55 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
+            android:gravity="center_vertical"
             android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Honda Civic 2020"
+                android:text="Mano de obra"
                 android:textColor="@color/black"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textStyle="bold"
-                android:id="@+id/it_proyecto_txtnombre"
-                android:layout_marginTop="3dp"
+                android:id="@+id/it_movimiento_txtnombre"
+                android:layout_marginTop="10dp"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Compra para reventa"
                 android:textColor="@color/gray"
-                android:id="@+id/it_proyecto_txtdescripcion"
-                android:layout_marginTop="3dp"
+                android:id="@+id/it_movimiento_txtdescripcion"
+                android:layout_marginTop="10dp"
                 android:maxLines="1"
                 android:ellipsize="end"
                 />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-$57,500.00"
-                    android:textColor="@color/red"
-                    android:textStyle="bold"
-                    android:id="@+id/it_proyecto_txtprecio"
-                    android:layout_marginTop="3dp"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+$57,500.00"
-                    android:textColor="@color/verde"
-                    android:textStyle="bold"
-                    android:id="@+id/it_proyecto_txtventa"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginLeft="15dp"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    />
-            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_rightarrow"
-                android:clickable="true"
-                android:id="@+id/it_proyecto_vermas"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-$4,000.00"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:id="@+id/it_movimiento_txtmonto"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 abr 2026"
+                android:textSize="10sp"
+                android:textColor="@color/light_gray"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:id="@+id/it_movimeinto_txtfecha"
                 />
 
         </LinearLayout>

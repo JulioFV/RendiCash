@@ -1,6 +1,8 @@
 package com.ingjcfv.rendicash11.repositorio;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.ingjcfv.rendicash11.dao.DaoMovimiento;
 import com.ingjcfv.rendicash11.database.AppDatabase;
@@ -12,6 +14,8 @@ import java.util.List;
 
 public class RepoMovimiento {
     private final DaoMovimiento daoMovimiento;
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
     public RepoMovimiento(Context contexto) {
         daoMovimiento = AppDatabase.getInstance(contexto).daoMovimiento();
     }
@@ -19,9 +23,14 @@ public class RepoMovimiento {
         DatabaseExecutor.EXECUTOR.execute(() -> {
            try{
                daoMovimiento.crearMovimiento(movimiento);
-               callback.onSuccess("Movimiento creado");
+               mainHandler.post(() -> {
+                   callback.onSuccess("Movimiento creado");
+               });
+
            }catch (Exception e){
-               callback.onError(e);
+               mainHandler.post(()-> {
+                   callback.onError(e);
+               });
            }
         });
     }
@@ -29,9 +38,13 @@ public class RepoMovimiento {
         DatabaseExecutor.EXECUTOR.execute(() -> {
            try{
                daoMovimiento.eliminarMovimiento(movimiento);
-               callback.onSuccess("Movimiento eliminado");
+               mainHandler.post(() ->{
+                  callback.onSuccess("Movimiento eliminado");
+               });
            }catch (Exception e){
-               callback.onError(e);
+               mainHandler.post(() -> {
+                   callback.onError(e);
+               });
            }
         });
     }
