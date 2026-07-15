@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.ingjcfv.rendicash11.adapter.AdapterProyecto;
 import com.ingjcfv.rendicash11.modelo.Proyecto;
+import com.ingjcfv.rendicash11.repositorio.RepoMovimiento;
 import com.ingjcfv.rendicash11.repositorio.RepoProyectos;
 import com.ingjcfv.rendicash11.utils.Alerta;
 import com.ingjcfv.rendicash11.utils.CallbackResultado;
@@ -35,17 +36,27 @@ public class Dashboard extends Fragment {
     private TextView btnVerTodos;
     private NavController nav;
     private RepoProyectos repoProyectos;
+    private RepoMovimiento repoMovimiento;
     private RecyclerView recProyectos;
     private ArrayList<Proyecto> lista;
     private AdapterProyecto adapter;
     private SessionManager session;
+    private Bundle paquete;
+    private TextView txtBalance,txtGastos,txtIngresos;
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        txtBalance = view.findViewById(R.id.dash_txtbalance);
+        txtGastos = view.findViewById(R.id.dash_txtGastos);
+        txtIngresos = view.findViewById(R.id.dash_txtingresos);
+
+
         session = new SessionManager(requireContext());
         btnVerTodos = view.findViewById(R.id.dash_btn_ver_todos);
+        paquete = new Bundle();
+        paquete.putInt("interfaz", 1);
         nav = Navigation.findNavController(view);
         btnVerTodos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,11 +66,20 @@ public class Dashboard extends Fragment {
         });
         recProyectos = view.findViewById(R.id.dash_proyectos_activos);
         repoProyectos = new RepoProyectos(requireContext());
+        repoMovimiento = new RepoMovimiento(requireContext());
         recProyectos.setHasFixedSize(true);
         recProyectos.setLayoutManager(new LinearLayoutManager(requireContext()));
         lista = new ArrayList<>();
         obtenerProyectosRecomendados();
-
+        obtenerBalance();
+    }
+    private void obtenerBalance(){
+        double gastos = repoMovimiento.obtenerGastosGenerales(session.getSession().getId());
+        double ingresos = repoMovimiento.obtenerIngresosGenerales(session.getSession().getId());
+        double balance = ingresos - gastos;
+        txtBalance.setText("$"+balance);
+        txtGastos.setText("$"+gastos);
+        txtIngresos.setText("$"+ingresos);
     }
     private void obtenerProyectosRecomendados() {
 
@@ -98,7 +118,7 @@ public class Dashboard extends Fragment {
 
                         if (adapter == null) {
 
-                            adapter = new AdapterProyecto(lista);
+                            adapter = new AdapterProyecto(lista, paquete);
                             recProyectos.setAdapter(adapter);
 
                         } else {

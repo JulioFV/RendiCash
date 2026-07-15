@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey;
                 )
         }
 )
-public class Movimiento {
+public class  Movimiento {
     @PrimaryKey(autoGenerate = true)
     public int id;
 

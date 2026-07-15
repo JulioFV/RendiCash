@@ -64,6 +64,7 @@
                         android:layout_marginLeft="15sp"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
+                        android:id="@+id/dash_txtbalance"
                         />
                     <ImageView
                         android:layout_width="125dp"
@@ -134,6 +135,7 @@
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_marginLeft="10dp"
+                    android:id="@+id/dash_txtGastos"
                     />
                 <TextView
                     android:layout_width="0dp"
@@ -142,7 +144,8 @@
                     android:text="$16,000.00"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:layout_marginLeft="20dp"/>
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/dash_txtingresos"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

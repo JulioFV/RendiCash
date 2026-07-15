@@ -1,5 +1,6 @@
 package com.ingjcfv.rendicash11;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ImageView btnMenu;
     private NavController nav;
-    private CardView btnDashboard, btnProjects, btnLogout,btnAddProject;
+    private LinearLayout btnDashboard, btnProjects, btnLogout,btnAddProject;
     private LinearLayout btnCerrar;
 
 
@@ -51,23 +52,23 @@ public class MainActivity extends AppCompatActivity {
         btnDashboard.setOnClickListener(v -> {
             nav.navigate(R.id.dashboard);
             drawerLayout.closeDrawer(GravityCompat.START);
-            btnDashboard.setCardBackgroundColor(getResources().getColor(R.color.green));
-            btnProjects.setCardBackgroundColor(getResources().getColor(R.color.white));
-            btnAddProject.setCardBackgroundColor(getResources().getColor(R.color.white));
+            btnDashboard.setBackgroundColor(getResources().getColor(R.color.green));
+            btnProjects.setBackgroundColor(getResources().getColor(R.color.white));
+            btnAddProject.setBackgroundColor(getResources().getColor(R.color.white));
         });
         btnProjects.setOnClickListener(v -> {
             drawerLayout.closeDrawer(GravityCompat.START);
             nav.navigate(R.id.mis_proyectos);
-            btnDashboard.setCardBackgroundColor(getResources().getColor(R.color.white));
-            btnProjects.setCardBackgroundColor(getResources().getColor(R.color.green));
-            btnAddProject.setCardBackgroundColor(getResources().getColor(R.color.white));
+            btnDashboard.setBackgroundColor(getResources().getColor(R.color.white));
+            btnProjects.setBackgroundColor(getResources().getColor(R.color.green));
+            btnAddProject.setBackgroundColor(getResources().getColor(R.color.white));
         });
         btnAddProject.setOnClickListener(v -> {
             drawerLayout.closeDrawer(GravityCompat.START);
             nav.navigate(R.id.crear_proyecto);
-            btnDashboard.setCardBackgroundColor(getResources().getColor(R.color.white));
-            btnProjects.setCardBackgroundColor(getResources().getColor(R.color.white));
-            btnAddProject.setCardBackgroundColor(getResources().getColor(R.color.green));
+            btnDashboard.setBackgroundColor(getResources().getColor(R.color.white));
+            btnProjects.setBackgroundColor(getResources().getColor(R.color.white));
+            btnAddProject.setBackgroundColor(getResources().getColor(R.color.green));
         });
         btnLogout.setOnClickListener(v -> {
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -91,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus){
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
-            //POR SI SE AGREGA MODO INMERSIVO
             activarModoInmersivo();
         }
     }

@@ -51,4 +51,10 @@ public class RepoMovimiento {
     public List<Movimiento> obtenerMovimientosPorProyecto(int id_proyecto) {
         return daoMovimiento.obtenerMovimientosPorProyecto(id_proyecto);
     }
+    public double obtenerGastosGenerales(int id_usuario) {
+        return daoMovimiento.obtenerGastosGenerales(id_usuario);
+    }
+    public double obtenerIngresosGenerales(int id_usuario) {
+        return daoMovimiento.obtenerIngresosGenerales(id_usuario);
+    }
 }

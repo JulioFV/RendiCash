@@ -102,7 +102,6 @@
                 android:clickable="true"
                 android:id="@+id/it_proyecto_vermas"
                 />
-
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

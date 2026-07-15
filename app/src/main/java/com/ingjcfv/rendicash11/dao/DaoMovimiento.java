@@ -17,5 +17,9 @@ public interface DaoMovimiento {
     void eliminarMovimiento(Movimiento movimiento);
     @Query("SELECT * FROM movimiento WHERE id_proyecto=:id_proyecto")
     List<Movimiento> obtenerMovimientosPorProyecto(int id_proyecto);
+    @Query("SELECT SUM(monto) FROM movimiento WHERE id_usuario = :id_usuario AND tipo = 1")
+    double obtenerGastosGenerales(int id_usuario);
+    @Query("SELECT SUM(monto) FROM movimiento WHERE id_usuario = :id_usuario AND tipo = 2")
+    double obtenerIngresosGenerales(int id_usuario);
 
 }

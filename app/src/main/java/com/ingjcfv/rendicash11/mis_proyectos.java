@@ -39,12 +39,15 @@ public class mis_proyectos extends Fragment {
     private RepoProyectos repoProyectos;
     private AdapterProyecto adapter;
     private SessionManager session;
+    private Bundle paquete;
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         nav = Navigation.findNavController(view);
+        paquete = new Bundle();
+        paquete.putInt("interfaz", 2);
         btnMas = view.findViewById(R.id.mis_proyectos_btnmas);
         recProyectos = view.findViewById(R.id.mis_proyectos_recycler);
         recProyectos.setHasFixedSize(true);
@@ -97,7 +100,7 @@ public class mis_proyectos extends Fragment {
 
                         if (adapter == null) {
 
-                            adapter = new AdapterProyecto(lista);
+                            adapter = new AdapterProyecto(lista, paquete);
                             recProyectos.setAdapter(adapter);
 
                         } else {

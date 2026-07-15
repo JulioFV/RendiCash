@@ -2,11 +2,19 @@ package com.ingjcfv.rendicash11;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,7 +22,35 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class detalles_proyecto extends Fragment {
-
+    private ImageView btnRegresar;
+    private CardView btnNuevoMovimeinto;
+    private TextView txtInversionTotal;
+    private NavController nav;
+    private Bundle paquete;
+    private int interfaz;
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        nav = Navigation.findNavController(view);
+        btnRegresar = view.findViewById(R.id.dp_btn_regresar);
+        btnNuevoMovimeinto = view.findViewById(R.id.dp_btn_nuevo_movimeinto);
+        paquete = new Bundle();
+        paquete = getArguments();
+        interfaz = paquete.getInt("interfaz");
+        btnRegresar.setOnClickListener( v ->{
+            if(interfaz == 1){
+                nav.navigate(R.id.dashboard);
+            }else if(interfaz == 2){
+                nav.navigate(R.id.mis_proyectos);
+            }
+        });
+        btnNuevoMovimeinto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nav.navigate(R.id.nuevo_movimiento,paquete);
+            }
+        });
+    }
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

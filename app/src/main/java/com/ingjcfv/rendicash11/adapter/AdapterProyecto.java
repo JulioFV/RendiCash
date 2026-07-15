@@ -2,6 +2,7 @@ package com.ingjcfv.rendicash11.adapter;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +23,12 @@ import java.util.List;
 
 public class AdapterProyecto extends RecyclerView.Adapter<AdapterProyecto.ViewHolderProyecto> {
     private ArrayList<Proyecto> lista;
+    private int interfaz;
     private Bundle paquete;
     private final List<Integer> iconos = Arrays.asList(R.drawable.ic_phone, R.drawable.ic_car, R.drawable.ic_animal, R.drawable.ic_tag);
 
-    public AdapterProyecto(ArrayList<Proyecto> lista){
+    public AdapterProyecto(ArrayList<Proyecto> lista, Bundle paquete){
+        this.paquete = paquete;
         this.lista = lista;
     }
 
@@ -39,7 +42,9 @@ public class AdapterProyecto extends RecyclerView.Adapter<AdapterProyecto.ViewHo
     @Override
     public void onBindViewHolder(@NonNull AdapterProyecto.ViewHolderProyecto holder, int position) {
         Proyecto proyecto = lista.get(position);
-        paquete = new Bundle();
+        interfaz = paquete.getInt("interfaz");
+        paquete.putInt("interfaz", interfaz);
+
         holder.txtTitulo.setText(proyecto.getNombre());
         holder.txtDescripcion.setText(proyecto.getDetalles());
         holder.txtPrecio.setText("-"+proyecto.getPrecioEstimado());
@@ -55,9 +60,20 @@ public class AdapterProyecto extends RecyclerView.Adapter<AdapterProyecto.ViewHo
             @Override
             public void onClick(View view) {
                 NavController nav = Navigation.findNavController(view);
-                nav.navigate(R.id.detalles_proyecto);
+                nav.navigate(R.id.detalles_proyecto,paquete);
             }
         });
+        switch (proyecto.getStatus()){
+            case 1:
+                holder.btnVerMas.setImageResource(R.drawable.ic_rightarrow);
+                break;
+            case 2:
+                holder.btnVerMas.setImageResource(R.drawable.ic_check_verde);
+                break;
+            default:
+                break;
+        }
+
         //holder.txtVenta.setText(proyecto.getVenta());
         //holder.imgIcono.setImageResource(proyecto.getIcono());
 
