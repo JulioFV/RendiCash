@@ -56,8 +56,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="3"
                         android:text="-$52,000.00"
                         android:textColor="@color/red"
                         android:textSize="40sp"
@@ -65,6 +66,8 @@
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
                         android:id="@+id/dash_txtbalance"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         />
                     <ImageView
                         android:layout_width="125dp"
@@ -136,6 +139,8 @@
                     android:textStyle="bold"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/dash_txtGastos"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     />
                 <TextView
                     android:layout_width="0dp"
@@ -145,7 +150,10 @@
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_marginLeft="20dp"
-                    android:id="@+id/dash_txtingresos"/>
+                    android:id="@+id/dash_txtingresos"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

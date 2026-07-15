@@ -73,10 +73,19 @@ public class Dashboard extends Fragment {
         obtenerProyectosRecomendados();
         obtenerBalance();
     }
-    private void obtenerBalance(){
+    private void obtenerBalance() {
+        /**
+         *
+         * REVISAR QUE LAS CONSULTAS FUNCIONEN BIEN
+         */
         double gastos = repoMovimiento.obtenerGastosGenerales(session.getSession().getId());
+        Log.e("Gastos" , ""+gastos);
         double ingresos = repoMovimiento.obtenerIngresosGenerales(session.getSession().getId());
+        Log.e("Ingresos" , ""+ingresos);
         double balance = ingresos - gastos;
+        if(balance >= 0){
+            txtBalance.setTextColor(getResources().getColor(R.color.verde));
+        }
         txtBalance.setText("$"+balance);
         txtGastos.setText("$"+gastos);
         txtIngresos.setText("$"+ingresos);

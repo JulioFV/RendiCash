@@ -11,6 +11,7 @@ import com.ingjcfv.rendicash11.utils.CallbackResultado;
 import com.ingjcfv.rendicash11.utils.DatabaseExecutor;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 public class RepoMovimiento {
     private final DaoMovimiento daoMovimiento;
@@ -52,9 +53,29 @@ public class RepoMovimiento {
         return daoMovimiento.obtenerMovimientosPorProyecto(id_proyecto);
     }
     public double obtenerGastosGenerales(int id_usuario) {
-        return daoMovimiento.obtenerGastosGenerales(id_usuario);
+        try{
+            Future<Double> future = DatabaseExecutor.EXECUTOR.submit(() -> {
+                return daoMovimiento.obtenerGastosGenerales(id_usuario);
+            });
+            return future.get();
+        }catch (Exception e){
+            if(e instanceof InterruptedException){
+                return 0;
+            }
+            return 10;
+        }
     }
     public double obtenerIngresosGenerales(int id_usuario) {
-        return daoMovimiento.obtenerIngresosGenerales(id_usuario);
+        try{
+            Future<Double> future = DatabaseExecutor.EXECUTOR.submit(() -> {
+                return daoMovimiento.obtenerIngresosGenerales(id_usuario);
+            });
+            return future.get();
+        }catch (Exception e){
+            if(e instanceof InterruptedException){
+                return 0;
+            }
+            return 0;
+        }
     }
 }
