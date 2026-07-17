@@ -14,6 +14,7 @@ import com.ingjcfv.rendicash11.R;
 import com.ingjcfv.rendicash11.modelo.Movimiento;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterMovimientos extends RecyclerView.Adapter<AdapterMovimientos.ViewHolderMovimiento> {
     private ArrayList<Movimiento> lista;
@@ -21,6 +22,8 @@ public class AdapterMovimientos extends RecyclerView.Adapter<AdapterMovimientos.
     public AdapterMovimientos(ArrayList<Movimiento> lista){
         this.lista = lista;
     }
+    private static final String [] categorias = {"Refacciones","Alimentos","Mano de obra","Tramites/Impuestos",
+            "Veterinario","Suplementos","Traslado", "Otros"};
 
     @NonNull
     @Override
@@ -32,7 +35,13 @@ public class AdapterMovimientos extends RecyclerView.Adapter<AdapterMovimientos.
     @Override
     public void onBindViewHolder(@NonNull AdapterMovimientos.ViewHolderMovimiento holder, int position) {
         Movimiento movimiento = lista.get(position);
-        //holder.txtTitulo.setText(movimiento.getNombre()); CATEGORIA
+        for(int i = 0; i < categorias.length; i++){
+            holder.txtTitulo.setText(categorias[movimiento.getCategoria()]);
+        }
+        if(movimiento.getTipo() == 2){
+            holder.cardView.setCardBackgroundColor(holder.itemView.getResources().getColor(R.color.green));
+            holder.imgIcono.setImageResource(R.drawable.ic_arrowuprightv);
+        }
         holder.txtDescripcion.setText(movimiento.getDescripcion());
         holder.txtPrecio.setText(""+movimiento.getMonto());
         holder.txtFecha.setText(movimiento.getFecha());

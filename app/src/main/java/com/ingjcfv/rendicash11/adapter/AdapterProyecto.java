@@ -59,6 +59,7 @@ public class AdapterProyecto extends RecyclerView.Adapter<AdapterProyecto.ViewHo
         holder.btnVerMas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                paquete.putSerializable("proyecto", proyecto);
                 NavController nav = Navigation.findNavController(view);
                 nav.navigate(R.id.detalles_proyecto,paquete);
             }

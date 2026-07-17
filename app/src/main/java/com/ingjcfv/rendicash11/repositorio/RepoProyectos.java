@@ -32,10 +32,7 @@ public class RepoProyectos {
             }
         });
     }
-    public void obtenerProyectosPorUsuario(
-            int id_usuario,
-            CallbackResultado<List<Proyecto>> callback
-    ) {
+    public void obtenerProyectosPorUsuario(int id_usuario,CallbackResultado<List<Proyecto>> callback) {
 
         DatabaseExecutor.EXECUTOR.execute(() -> {
 
@@ -58,11 +55,7 @@ public class RepoProyectos {
 
         });
     }
-
-
-    public void obtenerProyectosRecomendados(int id_usuario,
-            CallbackResultado<List<Proyecto>> callback
-    ) {
+    public void obtenerProyectosRecomendados(int id_usuario, CallbackResultado<List<Proyecto>> callback) {
 
         DatabaseExecutor.EXECUTOR.execute(() -> {
 
@@ -83,6 +76,20 @@ public class RepoProyectos {
 
             }
 
+        });
+    }
+    public void finalizarProyecto(int id, CallbackResultado<String> callback){
+        DatabaseExecutor.EXECUTOR.execute(()->{
+            try{
+                daoProyecto.finalizarProyecto(id);
+                mainHandler.post(()->{
+                    callback.onSuccess("Proyecto finalizado");
+                });
+            }catch (Exception e){
+                mainHandler.post(()->{
+                    callback.onError(e);
+                });
+            }
         });
     }
 }

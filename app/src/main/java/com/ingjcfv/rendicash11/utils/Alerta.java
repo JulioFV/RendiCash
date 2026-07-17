@@ -26,6 +26,7 @@ public class Alerta {
     private ImageView imgAlerta;
     private ProgressBar progressBar;
     private Context contexto;
+    private TextView txtCerrar;
     public Alerta(Context contexto) {
         this.contexto = contexto;
         alerta = new Dialog(contexto);
@@ -41,6 +42,7 @@ public class Alerta {
         bg_circulo = alerta.findViewById(R.id.ln_bg_circulo);
         imgAlerta = alerta.findViewById(R.id.img_bg_circulo);
         progressBar = alerta.findViewById(R.id.alerta_progress);
+        txtCerrar = alerta.findViewById(R.id.alt_txt_cerrar);
         btnCerrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,11 +53,12 @@ public class Alerta {
     }
 
     public void AlertaConfirmacion(String titulo, String mensaje, Runnable onEliminar){
-        alerta_btn_cerrar_texto.setText("Cancelar");
-        alerta_btn_cerrar_texto.setTextColor(ContextCompat.getColor(contexto, R.color.black));
-        btnCerrar.setBackgroundColor(ContextCompat.getColor(contexto, R.color.white));
+        alerta_btn_cerrar_texto.setText("Confirmar");
+        alerta_btn_cerrar_texto.setTextColor(ContextCompat.getColor(contexto, R.color.white));
+        btnCerrar.setBackgroundColor(ContextCompat.getColor(contexto, R.color.verde));
         bg_circulo.setBackground(ContextCompat.getDrawable(contexto, R.drawable.bg_circulo_amarillo));
         imgAlerta.setImageResource(R.drawable.ic_warning);
+        txtCerrar.setText("Cancelar");
         txt_titulo.setText(titulo);
         txt_mensaje.setText(mensaje);
         btnConfirmar.setOnClickListener(new View.OnClickListener() {

@@ -4,6 +4,8 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "Proyecto",
         foreignKeys = @ForeignKey(
                 entity = Usuario.class,
@@ -13,7 +15,7 @@ import androidx.room.PrimaryKey;
                 onUpdate = ForeignKey.CASCADE
         )
 )
-public class Proyecto {
+public class Proyecto implements Serializable {
     @PrimaryKey(autoGenerate = true)
     public int id;
 

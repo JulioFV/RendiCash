@@ -101,8 +101,6 @@ public class crear_proyecto extends Fragment {
                 CrearProyecto();
             }
         });
-
-
     }
     private void ManejadorDeFondos(int icono) {
         proyecto.setIcono(icono);
@@ -115,7 +113,7 @@ public class crear_proyecto extends Fragment {
             int color = ContextCompat.getColor(requireContext(), colorRes);
 
             card.setCardBackgroundColor(color);
-            card.invalidate(); // fuerza redraw
+            card.invalidate();
         }
     }
     private void CrearProyecto(){

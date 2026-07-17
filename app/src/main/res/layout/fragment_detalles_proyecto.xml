@@ -134,7 +134,7 @@
                         android:textStyle="bold"
                         android:textSize="20sp"
                         android:layout_margin="10dp"
-
+                        android:id="@+id/dp_lbl_inversiontotal"
                         />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -166,6 +166,7 @@
                         android:textStyle="bold"
                         android:textSize="20sp"
                         android:layout_margin="10dp"
+                        android:id="@+id/dp_lbl_ingresos"
                         />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -204,7 +205,9 @@
                         android:textStyle="bold"
                         android:textAlignment="center"
                         android:layout_margin="15dp"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black"
+                        android:id="@+id/dp_lbl_rentabilidad"
+                        />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

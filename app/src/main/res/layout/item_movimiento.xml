@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/item_proyecto"
+    android:id="@+id/item_movimiento"
     app:cardCornerRadius="20dp"
     app:cardElevation="30dp"
     android:backgroundTint="@color/white"
@@ -78,6 +78,7 @@
                 android:ellipsize="end"
                 android:textStyle="bold"
                 android:textSize="15sp"
+                android:textColor="@color/black"
                 android:id="@+id/it_movimiento_txtmonto"
                 />
             <TextView

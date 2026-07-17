@@ -92,4 +92,18 @@ public class  Movimiento {
     public void setId_usuario(int id_usuario) {
         this.id_usuario = id_usuario;
     }
+
+    @Override
+    public String toString() {
+        return "Movimiento{" +
+                "id=" + id +
+                ", tipo=" + tipo +
+                ", monto=" + monto +
+                ", categoria=" + categoria +
+                ", descripcion='" + descripcion + '\'' +
+                ", fecha='" + fecha + '\'' +
+                ", id_proyecto=" + id_proyecto +
+                ", id_usuario=" + id_usuario +
+                '}';
+    }
 }

@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nuevo Proyecto   "
+            android:text="Nuevo Proyecto             "
             android:textSize="25sp"
             android:textColor="@color/black"
             android:textStyle="bold"

@@ -49,8 +49,19 @@ public class RepoMovimiento {
            }
         });
     }
-    public List<Movimiento> obtenerMovimientosPorProyecto(int id_proyecto) {
-        return daoMovimiento.obtenerMovimientosPorProyecto(id_proyecto);
+    public void obtenerMovimientosPorProyecto(int id_proyecto, CallbackResultado<List<Movimiento>> callback) {
+        DatabaseExecutor.EXECUTOR.execute(() -> {
+            try{
+                List<Movimiento> movimientos = daoMovimiento.obtenerMovimientosPorProyecto(id_proyecto);
+                mainHandler.post(() -> {
+                    callback.onSuccess(movimientos);
+                });
+            }catch (Exception e){
+                mainHandler.post(() -> {
+                    callback.onError(e);
+                });
+            }
+        });
     }
     public double obtenerGastosGenerales(int id_usuario) {
         try{
@@ -62,13 +73,39 @@ public class RepoMovimiento {
             if(e instanceof InterruptedException){
                 return 0;
             }
-            return 10;
+            return 0;
         }
     }
     public double obtenerIngresosGenerales(int id_usuario) {
         try{
             Future<Double> future = DatabaseExecutor.EXECUTOR.submit(() -> {
                 return daoMovimiento.obtenerIngresosGenerales(id_usuario);
+            });
+            return future.get();
+        }catch (Exception e){
+            if(e instanceof InterruptedException){
+                return 0;
+            }
+            return 0;
+        }
+    }
+    public double obtenerIngresosPorProyecto(int id_proyecto) {
+        try{
+            Future<Double> future = DatabaseExecutor.EXECUTOR.submit(() -> {
+                return daoMovimiento.obtenerIngresosPorProyecto(id_proyecto);
+            });
+            return future.get();
+        }catch (Exception e){
+            if(e instanceof InterruptedException){
+                return 0;
+            }
+            return 0;
+        }
+    }
+    public double obtenerGastosPorProyecto(int id_proyecto) {
+        try{
+            Future<Double> future = DatabaseExecutor.EXECUTOR.submit(() -> {
+                return daoMovimiento.obtenerGastosPorProyecto(id_proyecto);
             });
             return future.get();
         }catch (Exception e){
