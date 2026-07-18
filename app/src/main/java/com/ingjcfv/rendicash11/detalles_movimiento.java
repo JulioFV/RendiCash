@@ -2,11 +2,20 @@ package com.ingjcfv.rendicash11;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.ingjcfv.rendicash11.modelo.Movimiento;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +23,60 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class detalles_movimiento extends Fragment {
+    private Bundle paquete;
+    private Movimiento movimiento;
+    private TextView txtTitulo, txtDescripcion, txtMonto, txtFecha, txtIdRef, txtConcepto;
+    private CardView btnEliminar;
+    private ImageView btnRegresar;
+    private LinearLayout bgIcono;
+    private ImageView icono;
+    private static final String[] conceptos = {"Compra Inicial","Refacciones","Alimentos","Mano de obra","Tramites/Impuestos",
+            "Veterinario","Suplementos","Traslado", "Otros"};
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        txtDescripcion = view.findViewById(R.id.dproyecto_txtdescripcion);
+        txtMonto = view.findViewById(R.id.dproyecto_txtmonto);
+        txtFecha = view.findViewById(R.id.dproyecto_txtfecha);
+        txtIdRef = view.findViewById(R.id.dproyecto_txtid);
+        txtConcepto = view.findViewById(R.id.dproyecto_txtcategoria);
+        btnEliminar = view.findViewById(R.id.dproyecto_btn_eliminar);
+        btnRegresar = view.findViewById(R.id.dproyecto_btn_regresar);
+        bgIcono = view.findViewById(R.id.ln_bg_circulo);
+        icono = view.findViewById(R.id.img_icon);
+
+        paquete = getArguments();
+        movimiento = new Movimiento();
+        if(paquete != null){
+            movimiento = (Movimiento) paquete.getSerializable("movimiento");
+            if(movimiento != null){
+                Log.e("QUE TIENE EL OBJETO", movimiento.toString());
+                txtDescripcion.setText((movimiento.getDescripcion() == null) ? "" : movimiento.getDescripcion());
+                txtMonto.setText(""+movimiento.getMonto());
+                txtFecha.setText(movimiento.getFecha());
+                txtIdRef.setText("#00"+movimiento.getId());
+                for(int i = 0; i < conceptos.length; i++){
+                    txtConcepto.setText(conceptos[movimiento.getCategoria()]);
+                }
+                switch (movimiento.getTipo()){
+                    case 1:
+                        bgIcono.setBackgroundColor(getResources().getColor(R.color.rojo_claro, null));
+                        icono.setImageResource(R.drawable.ic_file_text_red);
+                        txtMonto.setText("-$" + movimiento.getMonto());
+                        break;
+                    case 2:
+                        bgIcono.setBackgroundColor(getResources().getColor(R.color.green, null));
+                        icono.setImageResource(R.drawable.ic_file_text);
+                        txtMonto.setText("+$" + movimiento.getMonto());
+                        break;
+                    default:
+                        //NO SE QUE PONER
+                        break;
+                }
+            }
+        }
+    }
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

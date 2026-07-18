@@ -49,7 +49,7 @@ public class nuevo_movimiento extends Fragment {
     private Movimiento objMovimiento;
     private Proyecto objProyecto;
     private RepoMovimiento repoMovimiento;
-    private static final String[] opcionesSpinner = {"Refacciones","Alimentos","Mano de obra","Tramites/Impuestos",
+    private static final String[] opcionesSpinner = {"Compra Inicial","Refacciones","Alimentos","Mano de obra","Tramites/Impuestos",
             "Veterinario","Suplementos","Traslado", "Otros"};
     private Bundle paquete;
     private static final int MODO_GASTO = 1;

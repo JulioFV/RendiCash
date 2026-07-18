@@ -23,7 +23,7 @@
         android:src="@drawable/ic_white_leftarrow"
         android:layout_marginLeft="20dp"
         android:clickable="true"
-        android:id="@+id/login_btn_regresar"
+        android:id="@+id/dproyecto_btn_regresar"
         />
     <TextView
         android:layout_width="match_parent"
@@ -52,10 +52,12 @@
                 android:layout_height="40dp"
                 android:background="@drawable/bg_circulo"
                 android:gravity="center"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:id="@+id/ln_bg_circulo">
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:id="@+id/img_icon"
                     android:src="@drawable/ic_file_text"/>
             </LinearLayout>
             <TextView
@@ -65,6 +67,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="25sp"
+                android:id="@+id/dproyecto_txtmonto"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -126,6 +129,7 @@
                     android:textAlignment="textEnd"
                     android:maxLines="1"
                     android:ellipsize="end"
+                    android:id="@+id/dproyecto_txtcategoria"
                     />
             </LinearLayout>
             <LinearLayout
@@ -150,6 +154,7 @@
                     android:textAlignment="textEnd"
                     android:maxLines="1"
                     android:ellipsize="end"
+                    android:id="@+id/dproyecto_txtfecha"
                     />
             </LinearLayout>
             <LinearLayout
@@ -174,6 +179,7 @@
                     android:textAlignment="textEnd"
                     android:maxLines="1"
                     android:ellipsize="end"
+                    android:id="@+id/dproyecto_txtid"
                     />
             </LinearLayout>
             <View
@@ -201,6 +207,7 @@
                     android:layout_height="150dp"
                     android:textColor="@color/black"
                     android:layout_marginLeft="10dp"
+                    android:id="@+id/dproyecto_txtdescripcion"
                     />
             </LinearLayout>
             <androidx.cardview.widget.CardView
@@ -210,6 +217,7 @@
                 android:clickable="true"
                 android:elevation="10dp"
                 app:cardCornerRadius="10dp"
+                android:id="@+id/dproyecto_btn_eliminar"
                 android:layout_margin="15dp">
                 <TextView
                     android:layout_width="match_parent"

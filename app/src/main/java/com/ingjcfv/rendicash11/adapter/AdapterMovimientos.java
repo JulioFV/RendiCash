@@ -1,5 +1,7 @@
 package com.ingjcfv.rendicash11.adapter;
 
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ingjcfv.rendicash11.R;
@@ -18,11 +22,11 @@ import java.util.List;
 
 public class AdapterMovimientos extends RecyclerView.Adapter<AdapterMovimientos.ViewHolderMovimiento> {
     private ArrayList<Movimiento> lista;
-
+    private Bundle paquete;
     public AdapterMovimientos(ArrayList<Movimiento> lista){
         this.lista = lista;
     }
-    private static final String [] categorias = {"Refacciones","Alimentos","Mano de obra","Tramites/Impuestos",
+    private static final String [] categorias = {"Compra Inicial","Refacciones","Alimentos","Mano de obra","Tramites/Impuestos",
             "Veterinario","Suplementos","Traslado", "Otros"};
 
     @NonNull
@@ -35,6 +39,7 @@ public class AdapterMovimientos extends RecyclerView.Adapter<AdapterMovimientos.
     @Override
     public void onBindViewHolder(@NonNull AdapterMovimientos.ViewHolderMovimiento holder, int position) {
         Movimiento movimiento = lista.get(position);
+        paquete = new Bundle();
         for(int i = 0; i < categorias.length; i++){
             holder.txtTitulo.setText(categorias[movimiento.getCategoria()]);
         }
@@ -45,7 +50,16 @@ public class AdapterMovimientos extends RecyclerView.Adapter<AdapterMovimientos.
         holder.txtDescripcion.setText(movimiento.getDescripcion());
         holder.txtPrecio.setText(""+movimiento.getMonto());
         holder.txtFecha.setText(movimiento.getFecha());
-
+        holder.itemMovimiento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                paquete.putSerializable("movimiento", movimiento);
+                Log.e("CONTENIDO DEL OBJETO", movimiento.toString());
+                Log.e("CONTENIDO DEL PAQUETE", paquete.toString());
+                NavController nav = Navigation.findNavController(view);
+                nav.navigate(R.id.detalles_movimiento,paquete);
+            }
+        });
     }
 
     @Override
@@ -60,6 +74,7 @@ public class AdapterMovimientos extends RecyclerView.Adapter<AdapterMovimientos.
         TextView txtDescripcion;
         TextView txtPrecio;
         TextView txtFecha;
+        CardView itemMovimiento;
         public ViewHolderMovimiento(@NonNull View itemView) {
             super(itemView);
             txtTitulo = itemView.findViewById(R.id.it_movimiento_txtnombre);
@@ -68,6 +83,7 @@ public class AdapterMovimientos extends RecyclerView.Adapter<AdapterMovimientos.
              txtFecha = itemView.findViewById(R.id.it_movimeinto_txtfecha);
              imgIcono = itemView.findViewById(R.id.it_movimeinto_img);
              cardView = itemView.findViewById(R.id.it_movimeinto_bg_img);
+             itemMovimiento = itemView.findViewById(R.id.item_movimiento);
 
 
         }

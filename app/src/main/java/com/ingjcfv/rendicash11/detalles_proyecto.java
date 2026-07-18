@@ -145,7 +145,12 @@ public class detalles_proyecto extends Fragment {
 
 
         if(objProyecto.getStatus() == 2) {
-            lblRentabilidad.setText(""+ (ingresosTotales - gastosTotales));
+            lblRentabilidad.setText("$"+ (ingresosTotales - gastosTotales));
+            if((ingresosTotales - gastosTotales) > 0){
+                lblRentabilidad.setTextColor(getResources().getColor(R.color.verde, null));
+            }else{
+                lblRentabilidad.setTextColor(getResources().getColor(R.color.rojo_oscuro, null));
+            }
             etiquetaProgreso.setVisibility(View.GONE);
             etiquetaTerminado.setVisibility(View.VISIBLE);
             btnNuevoMovimeinto.setVisibility(View.GONE);
